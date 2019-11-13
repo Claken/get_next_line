@@ -6,7 +6,7 @@
 /*   By: hvernhes <hvernhes@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/31 14:49:54 by hvernhes          #+#    #+#             */
-/*   Updated: 2019/11/11 18:18:44 by sachouam         ###   ########.fr       */
+/*   Updated: 2019/11/13 14:30:22 by sachouam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,6 @@ int		main(int ac, char **av)
 		//line = NULL;
 	}
 	printf("Ligne %d : %s\n", i, line);
-	//free(line);
+	free(line);
 	return (0);
 }

@@ -1,0 +1,11 @@
+GNL
+
+Arriver à gérer quand le buffer est grand !
+
+pourquoi gnl ne marche pas quand le buffer est trop grand ?
+
+-> byte == 0 ?
+
+-> else if (str) ?
+
+
