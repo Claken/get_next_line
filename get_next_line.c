@@ -6,7 +6,7 @@
 /*   By: sachouam <sachouam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 14:43:58 by sachouam          #+#    #+#             */
-/*   Updated: 2019/11/13 17:45:07 by sachouam         ###   ########.fr       */
+/*   Updated: 2019/11/14 15:23:54 by sachouam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,54 +55,43 @@ int				get_next_line(int fd, char **line)
 	// si y a deja quelque chose dans le str...
 	else if (str)
 	{
-		tmp = NULL;
-		if (!(tmp = ft_strjoin(str, buffer)))
-			return (-1);
-		free(str);
-		if (!(str = ft_substr(tmp, 0, ft_strlen(tmp))))
+		tmp = str;
+		if (!(str = ft_strjoin(str, buffer)))
 			return (-1);
 		free(tmp);
 		tmp = NULL;
 	}
 	// pour copier dans mon str le reste du buffer si on est pas tomber sur un r.a.l.l.,
 	// On boucle tant qu'on est pas tombe sur un \n ou si on est pas arrive a la fin de str
-	i = 0;
-	while (!ft_strchr(str, '\n') && str[i++] /*&& byte > 0*/)
+	while (!ft_strchr(str, '\n') && (byte = read(fd, buffer, BUFFER_SIZE)) > 0)
 	{
-		if ((byte = read(fd, buffer, BUFFER_SIZE)) == -1)
-			return (-1);
 		buffer[byte] = '\0';
-		if (!(tmp = ft_strjoin(str, buffer)))
-			return (-1);
-		free(str);
-		if (!(str = ft_substr(tmp, 0, ft_strlen(tmp))))
+		tmp = str;
+		if (!(str = ft_strjoin(str, buffer)))
 			return (-1);
 		free(tmp);
 		tmp = NULL;
 	}
-	//if (byte > 0)
-	// on envoie str dans la fonction pour 
+	// on envoie str dans la fonction pour avoir une ligne
 	if (!(*line = ft_one_line(str)))
 		return (-1);
 	// pour sauvegarder ce qu'il y a apres le retour a la ligne
 	i = 0;
 	while (str[i] != '\n' && str[i])
 		i++;
-	if (str[i])
+	if (str[i] != '\0')
 		i++;
-	if (!(tmp = ft_substr(str, i, ft_strlen(str))))
-		return (-1);
-	free(str);
-	if (!(str = ft_substr(tmp, 0, ft_strlen(tmp))))
+	tmp = str;
+	if (!(str = ft_substr(str, i, ft_strlen(str))))
 		return (-1);
 	free(tmp);
 	tmp = NULL;
 	//printf("\nstr: %s\n\n", str);
-	// pour arreter si le nombre de bytes est de 0 : a changer
+	// pour arreter si le nombre de bytes est de 0 et si y a pas de \n
 	if (byte == 0 && !ft_strchr(str, '\n'))
 	{
-		//if (!(*line = ft_substr("", 0, 2)))
-		//	return (-1);
+		free(str);
+		str = NULL;
 		return (0);
 	}
 	return (1);
