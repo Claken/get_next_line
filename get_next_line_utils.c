@@ -6,7 +6,7 @@
 /*   By: sachouam <sachouam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 14:44:07 by sachouam          #+#    #+#             */
-/*   Updated: 2019/11/13 14:25:04 by sachouam         ###   ########.fr       */
+/*   Updated: 2019/11/15 19:51:20 by sachouam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,8 @@ char			*ft_strchr(const char *s, int c)
 	int i;
 
 	i = 0;
+	if (!s)
+		return (NULL);
 	while (s[i])
 	{
 		if (s[i] == c)

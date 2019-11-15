@@ -6,7 +6,7 @@
 /*   By: sachouam <sachouam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 14:43:58 by sachouam          #+#    #+#             */
-/*   Updated: 2019/11/14 15:23:54 by sachouam         ###   ########.fr       */
+/*   Updated: 2019/11/15 19:51:54 by sachouam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,67 +32,79 @@ static char		*ft_one_line(char *str)
 	return (line);
 }
 
+static char		*ft_next_line(char *str)
+{
+	int		i;
+	char	*tmp;
+
+	i = 0;
+	tmp = NULL;
+	while (str[i] != '\n' && str[i])
+		i++;
+	if (str[i])
+		i++;
+	tmp = str;
+	if (!(str = ft_substr(str, i, ft_strlen(str))))
+		return (NULL);
+	free(tmp);
+	tmp = NULL;
+	return (str);
+}
+
+static int		ft_buffer_to_str(char **str, char *buffer)
+{
+	char *tmp;
+
+	tmp = NULL;
+	if (!*str)
+	{
+		if (!(*str = ft_substr(buffer, 0, ft_strlen(buffer))))
+			return (0);
+	}
+	else if (*str)
+	{
+		tmp = *str;
+		if (!(*str = ft_strjoin(*str, buffer)))
+			return (0);
+		free(tmp);
+		tmp = NULL;
+	}
+	return (1);
+}
+
+static int		ft_end_of_file(char **str, int byte)
+{
+	if (byte == 0 && !ft_strchr(*str, '\n'))
+	{
+		free(*str);
+		*str = NULL;
+		return (1);
+	}
+	return (0);
+}
+
 int				get_next_line(int fd, char **line)
 {
 	int				byte;
 	char			buffer[BUFFER_SIZE + 1];
-	char			*tmp;
 	static char		*str = NULL;
-	int				i;
 
-	if (fd < 0 || !line)
+	if (fd < 0 || !line || BUFFER_SIZE == 0)
 		return (-1);
-	if ((byte = read(fd, buffer, BUFFER_SIZE)) == -1)
-		return (-1);
-	buffer[byte] = '\0';
-	//printf("\nbuffer: %s\n\n", buffer);
-	// si le str est NULL, on copie ce qui est dans le buffer dans le str
-	if (!str)
+	byte = 1;
+	while (!ft_strchr(str, '\n') && byte > 0)
 	{
-		if (!(str = ft_substr(buffer, 0, ft_strlen(buffer))))
+		if ((byte = read(fd, buffer, BUFFER_SIZE)) == -1)
 			return (-1);
-	}
-	// si y a deja quelque chose dans le str...
-	else if (str)
-	{
-		tmp = str;
-		if (!(str = ft_strjoin(str, buffer)))
-			return (-1);
-		free(tmp);
-		tmp = NULL;
-	}
-	// pour copier dans mon str le reste du buffer si on est pas tomber sur un r.a.l.l.,
-	// On boucle tant qu'on est pas tombe sur un \n ou si on est pas arrive a la fin de str
-	while (!ft_strchr(str, '\n') && (byte = read(fd, buffer, BUFFER_SIZE)) > 0)
-	{
 		buffer[byte] = '\0';
-		tmp = str;
-		if (!(str = ft_strjoin(str, buffer)))
+		if (!ft_buffer_to_str(&str, buffer))
 			return (-1);
-		free(tmp);
-		tmp = NULL;
 	}
-	// on envoie str dans la fonction pour avoir une ligne
 	if (!(*line = ft_one_line(str)))
 		return (-1);
-	// pour sauvegarder ce qu'il y a apres le retour a la ligne
-	i = 0;
-	while (str[i] != '\n' && str[i])
-		i++;
-	if (str[i] != '\0')
-		i++;
-	tmp = str;
-	if (!(str = ft_substr(str, i, ft_strlen(str))))
+	if (!(str = ft_next_line(str)))
 		return (-1);
-	free(tmp);
-	tmp = NULL;
-	//printf("\nstr: %s\n\n", str);
-	// pour arreter si le nombre de bytes est de 0 et si y a pas de \n
-	if (byte == 0 && !ft_strchr(str, '\n'))
-	{
-		free(str);
-		str = NULL;
+	if (ft_end_of_file(&str, byte))
 		return (0);
-	}
 	return (1);
 }
