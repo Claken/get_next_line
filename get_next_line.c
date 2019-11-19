@@ -6,11 +6,32 @@
 /*   By: sachouam <sachouam@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/25 14:43:58 by sachouam          #+#    #+#             */
-/*   Updated: 2019/11/15 19:51:54 by sachouam         ###   ########.fr       */
+/*   Updated: 2019/11/19 14:54:33 by sachouam         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+static int		ft_buffer_to_str(char **str, char *buffer)
+{
+	char *tmp;
+
+	tmp = NULL;
+	if (!*str)
+	{
+		if (!(*str = ft_substr(buffer, 0, ft_strlen(buffer))))
+			return (0);
+	}
+	else if (*str)
+	{
+		tmp = *str;
+		if (!(*str = ft_strjoin(*str, buffer)))
+			return (0);
+		free(tmp);
+		tmp = NULL;
+	}
+	return (1);
+}
 
 static char		*ft_one_line(char *str)
 {
@@ -49,27 +70,6 @@ static char		*ft_next_line(char *str)
 	free(tmp);
 	tmp = NULL;
 	return (str);
-}
-
-static int		ft_buffer_to_str(char **str, char *buffer)
-{
-	char *tmp;
-
-	tmp = NULL;
-	if (!*str)
-	{
-		if (!(*str = ft_substr(buffer, 0, ft_strlen(buffer))))
-			return (0);
-	}
-	else if (*str)
-	{
-		tmp = *str;
-		if (!(*str = ft_strjoin(*str, buffer)))
-			return (0);
-		free(tmp);
-		tmp = NULL;
-	}
-	return (1);
 }
 
 static int		ft_end_of_file(char **str, int byte)
