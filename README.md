@@ -21,6 +21,7 @@ This project is part of the 42 common core curriculum.
 
 ## 🚀 Usage
 
+### With one file
 Compile the executable with this line:
 ```bash
 cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 get_next_line.c get_next_line_utils.c main_2.c -o gnl
@@ -36,9 +37,4 @@ The output will be this:
 1 Ligne 3 : 0123456789AEBCDF
 1 Ligne 4 : 
 0 Ligne 5 :
-```
-You can replace `main_2.c` with your own tester that calls:
-
-```c
-int get_next_line(int fd, char **line);
 ```
