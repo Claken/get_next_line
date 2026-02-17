@@ -1,6 +1,7 @@
 # GET NEXT LINE
 
-A C function that reads a file descriptor line by line, returning one line per call while keeping unread data in a static buffer.
+A C function that reads a file descriptor line by line, returning one line per call while keeping unread data in a static buffer. </br>
+This project is part of the 42 common core curriculum.
 
 ## 👩🏻‍🏫 What I gained from the project
 
@@ -20,9 +21,13 @@ A C function that reads a file descriptor line by line, returning one line per c
 
 ## 🚀 Usage
 
+Compile the executable with this line:
 ```bash
 cc -Wall -Wextra -Werror -D BUFFER_SIZE=42 get_next_line.c get_next_line_utils.c main_2.c -o gnl
-./gnl
+```
+Choose a file among the `.txt` files inside the project:
+```bash
+./gnl some_lines.txt
 ```
 
 You can replace `main_2.c` with your own tester that calls:
