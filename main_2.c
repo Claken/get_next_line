@@ -32,8 +32,8 @@ int		main(int ac, char **av)
 	(void)ac;
 	(void)av;
 	i = 1;
-	//fd = open(av[1], O_RDONLY);
-	fd = 0;
+	fd = open(av[1], O_RDONLY);
+	//fd = 0;
 	while((j = get_next_line(fd, &line)) > 0)
 	{
 		printf("%d Ligne %d : %s\n", j, i, line);
