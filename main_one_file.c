@@ -1,0 +1,47 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main_2.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: hvernhes <hvernhes@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/31 14:49:54 by hvernhes          #+#    #+#             */
+/*   Updated: 2019/11/18 23:15:14 by sachouam         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include <sys/types.h>
+#include "get_next_line.h"
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <stdio.h>
+
+int		main(int ac, char **av)
+{
+	char	*line;
+	int		fd;
+	int		i;
+	int		j;
+
+	(void)ac;
+	(void)av;
+	i = 1;
+	fd = open(av[1], O_RDONLY);
+	if (fd == -1)
+	{
+		printf("Usage: ./a.out <file.txt>\n");
+		close(fd);
+		return (1);
+	}
+	while((j = get_next_line(fd, &line)) > 0)
+	{
+		printf("%d Ligne %d : %s\n", j, i, line);
+		i++;
+		free(line);
+		line = NULL;
+	}
+	printf("%d Ligne %d : %s\n", j, i, line);
+	free(line);
+	close(fd);
+	return (0);
+}
