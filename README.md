@@ -29,7 +29,14 @@ Choose a file among the `.txt` files inside the project:
 ```bash
 ./gnl some_lines.txt
 ```
-
+The output will be this:
+```bash
+1 Ligne 1 : 0123
+1 Ligne 2 : 01234567
+1 Ligne 3 : 0123456789AEBCDF
+1 Ligne 4 : 
+0 Ligne 5 :
+```
 You can replace `main_2.c` with your own tester that calls:
 
 ```c
